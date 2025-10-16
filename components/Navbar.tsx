@@ -9,9 +9,8 @@ export default async function Navbar() {
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <nav className="flex justify-between items-center p-4 bg-white shadow">
-      <Link href="/" className="font-bold text-lg">MyApp</Link>
-
+    <nav className="flex justify-between items-center p-4 sm:pl-20 md:pl-42 shadow">
+      <Link href="/" className="font-bold text-lg">Zen-sume</Link>
       <div className="flex gap-4">
         {user ? (
           <>
@@ -21,7 +20,7 @@ export default async function Navbar() {
         ) : (
           <Link
             href="/login"
-            className="border px-4 py-2 rounded text-green-700 border-green-600 hover:bg-green-50"
+            className="border px-4 py-2 rounded text-white bg-green-500 border-green-600 hover:bg-green-400"
           >
             Login
           </Link>
