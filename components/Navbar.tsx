@@ -1,23 +1,21 @@
-// components/Navbar.tsx
+'use client'
+
 import Link from 'next/link'
 import LogoutButton from './LogoutButton'
-import { createClient } from '@/lib/supabase/server'
 import { Bebas_Neue } from 'next/font/google'
+import { useAuth } from '@/context/AuthContext'
 
 const bebas = Bebas_Neue({
     weight: '400'
 })
 
-export default async function Navbar() {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-
+export default function Navbar() {
+  const auth = useAuth()
   return (
     <nav className="flex justify-between items-center p-4 sm:pl-15 md:pl-25 lg:pl-35 shadow">
       <Link href="/" className="font-bold text-lg">Zen-sume</Link>
       <div className="flex gap-4 items-center">
-        {user ? (
+        {auth.user ? (
           <>
             <Link href="/profile">Profile</Link>
             <LogoutButton />

@@ -1,28 +1,15 @@
 'use client'
 
 import { supabase } from '@/lib/supabase/client'
-import { upsertUser } from '@/lib/supabase/insertUser'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_, session) => {
-      const user = session?.user
-      console.log(user)
-      if (user && user.email) {
-        await upsertUser({ userId: user.id, email: user.email })
-      }
-    })
-
-    return () => {
-      listener.subscription.unsubscribe()
-    }
-  }, [])
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,8 +18,13 @@ export default function LoginPage() {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setMessage(error.message)
     else if (data.user && data.user.email) {
-      await upsertUser({ userId: data.user.id, email: data.user.email })
+      await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: data.user.id, email: data.user.email }),
+      })
       setMessage('Logged in!')
+      router.push('/dashboard')
     }
     setLoading(false)
   }
@@ -44,7 +36,11 @@ export default function LoginPage() {
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) setMessage(error.message)
     else if (data.user && data.user.email){
-      await upsertUser({ userId: data.user.id, email: data.user.email })
+      await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: data.user.id, email: data.user.email }),
+      })
       setMessage('Check your email to confirm your account!')
     }
     setLoading(false)
