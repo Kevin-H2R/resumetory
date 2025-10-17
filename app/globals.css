@@ -11,3 +11,39 @@ body {
   color: var(--foreground);
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
+
+.gsi-material-button {
+  background-color: white;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  color: #3c4043;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.gsi-material-button:hover {
+  background-color: #f7f8f8;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3);
+}
+
+.gsi-material-button:active {
+  background-color: #f1f3f4;
+}
+
+.gsi-material-button-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.gsi-material-button-contents {
+  line-height: 1;
+}
