@@ -1,7 +1,8 @@
 'use client'
 
 import { supabase } from '@/lib/supabase/client'
-import { useState } from 'react'
+import { upsertUser } from '@/lib/supabase/insertUser'
+import { useEffect, useState } from 'react'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -9,13 +10,30 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_, session) => {
+      const user = session?.user
+      console.log(user)
+      if (user && user.email) {
+        await upsertUser({ userId: user.id, email: user.email })
+      }
+    })
+
+    return () => {
+      listener.subscription.unsubscribe()
+    }
+  }, [])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setMessage('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setMessage(error.message)
-    else setMessage('Logged in!')
+    else if (data.user && data.user.email) {
+      await upsertUser({ userId: data.user.id, email: data.user.email })
+      setMessage('Logged in!')
+    }
     setLoading(false)
   }
 
@@ -23,9 +41,12 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setMessage('')
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) setMessage(error.message)
-    else setMessage('Check your email to confirm your account!')
+    else if (data.user && data.user.email){
+      await upsertUser({ userId: data.user.id, email: data.user.email })
+      setMessage('Check your email to confirm your account!')
+    }
     setLoading(false)
   }
 

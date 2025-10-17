@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { upsertUser } from '@/lib/supabase/insertUser'
 
 export async function GET(req: Request) {
   const requestUrl = new URL(req.url)
@@ -7,7 +8,11 @@ export async function GET(req: Request) {
 
   if (code) {
     const supabase = await createClient()
-    await supabase.auth.exchangeCodeForSession(code)
+    const result = await supabase.auth.exchangeCodeForSession(code)
+    if (result.data.user && result.data.user.email) {
+      console.log("WEPGIOJWEPGOIJWEGPIWEJ")
+      await upsertUser({userId: result.data.user?.id, email: result.data.user?.email})
+    }
   }
 
   const next = requestUrl.searchParams.get('next') || '/dashboard'

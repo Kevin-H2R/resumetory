@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getUser()
 
   // List of protected routes
-  const protectedRoutes = ['/dashboard', '/api/private']
+  const protectedRoutes = ['/dashboard', '/api/private', '/profile']
 
   // If the request path starts with one of those and user is not logged in → redirect
   const isProtected = protectedRoutes.some((path) =>
@@ -47,5 +47,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/api/private/:path*', '/auth/:path*'], // Only these routes get checked
+  matcher: ['/dashboard/:path*', '/api/private/:path*', '/auth/:path*', '/profile'],
 }

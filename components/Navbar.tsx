@@ -16,10 +16,10 @@ export default async function Navbar() {
   return (
     <nav className="flex justify-between items-center p-4 sm:pl-15 md:pl-25 lg:pl-35 shadow">
       <Link href="/" className="font-bold text-lg">Zen-sume</Link>
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
         {user ? (
           <>
-            <span className="text-gray-700">Hi, {user.email}</span>
+            <Link href="/profile">Profile</Link>
             <LogoutButton />
           </>
         ) : (
