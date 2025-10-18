@@ -10,7 +10,6 @@ export async function GET(req: Request) {
     const supabase = await createClient()
     const result = await supabase.auth.exchangeCodeForSession(code)
     if (result.data.user && result.data.user.email) {
-      console.log("WEPGIOJWEPGOIJWEGPIWEJ")
       await upsertUser({userId: result.data.user?.id, email: result.data.user?.email})
     }
   }
