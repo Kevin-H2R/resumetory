@@ -1,18 +1,41 @@
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import ProfileForm from "./ProfileForm";
 
-const ProfilePage = async () => {
-  const supabase = await createClient()
- const {
+export default async function ProfilePage() {
+  const supabase = await createClient();
+  const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login')
+    redirect("/login"); // redirect if not logged in
   }
-  return <div className="p-4 sm:p-15 md:p-25 lg:p-35">
-    <div>{user.id}</div>
-  </div>
-}
 
-export default ProfilePage
+  // Fetch user's data from your User table
+  const { data: profile } = await supabase
+    .from("User")
+    .select("*")
+    .eq("email", user.email)
+    .single();
+
+  return (
+    <main className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+        <h1 className="text-2xl font-semibold text-center mb-8">My Profile</h1>
+        <ProfileForm
+          initialUser={{
+            email: user.email ?? "",
+            firstname: profile?.firstname ?? "",
+            lastname: profile?.lastname ?? "",
+            phoneCode: profile?.phoneCode ?? "",
+            phoneNumber: profile?.phoneNumber ?? "",
+            location: profile?.location ?? "",
+            linkedIn: profile?.linkedIn ?? "",
+            link: profile?.link ?? "",
+          }}
+        />
+      </div>
+    </main>
+  );
+}
