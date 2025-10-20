@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const formSchema = z.object({
   firstname: z.string().optional(),
@@ -39,13 +41,15 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
   const [success, setSuccess] = useState(false);
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: initialUser,
-  });
+  register,
+  handleSubmit,
+  setValue,
+  watch,
+  formState: { errors, isSubmitting },
+} = useForm<FormData>({
+  resolver: zodResolver(formSchema),
+  defaultValues: initialUser,
+});
 
   async function onSubmit(data: FormData) {
     setSuccess(false);
@@ -86,13 +90,36 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="phoneCode">Phone Code</Label>
-          <Input id="phoneCode" {...register("phoneCode")} />
+        <div>          
+
         </div>
         <div>
           <Label htmlFor="phoneNumber">Phone Number</Label>
-          <Input id="phoneNumber" {...register("phoneNumber")} />
+         <PhoneInput
+          country={"kr"}
+          value={`${watch("phoneCode") ?? ""}${watch("phoneNumber") ?? ""}`}
+          onChange={(value, country) => {
+            if (country && "dialCode" in country) {
+              const code = `+${country.dialCode}`;
+
+              // Remove any leading dial code from the value
+              const number = value.replace(/^\+?\d+/, ""); 
+
+              setValue("phoneCode", code);
+              setValue("phoneNumber", number);
+            }
+          }}
+          inputProps={{ name: "phoneNumber", required: false }}
+          inputStyle={{
+            width: "100%",
+            borderRadius: "0.5rem",
+            borderColor: "#e5e7eb",
+          }}
+          buttonStyle={{
+            borderRadius: "0.5rem 0 0 0.5rem",
+            borderColor: "#e5e7eb",
+          }}
+        />
         </div>
       </div>
 
