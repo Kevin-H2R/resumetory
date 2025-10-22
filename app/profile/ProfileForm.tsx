@@ -101,10 +101,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           onChange={(value, country) => {
             if (country && "dialCode" in country) {
               const code = `+${country.dialCode}`;
-
-              // Remove any leading dial code from the value
-              const number = value.replace(/^\+?\d+/, ""); 
-
+              const number = value.replace(/^\+?\d+/, "");
               setValue("phoneCode", code);
               setValue("phoneNumber", number);
             }
@@ -113,11 +110,15 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           inputStyle={{
             width: "100%",
             borderRadius: "0.5rem",
-            borderColor: "#e5e7eb",
+            borderColor: "#333",
+            backgroundColor: "#171717",
+            color: "#fff",
           }}
           buttonStyle={{
             borderRadius: "0.5rem 0 0 0.5rem",
-            borderColor: "#e5e7eb",
+            borderColor: "#333",
+            backgroundColor: "#171717",
+            color: "#fff",
           }}
         />
         </div>
