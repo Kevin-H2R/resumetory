@@ -53,7 +53,6 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
 
   async function onSubmit(data: FormData) {
     setSuccess(false);
-
     const { error } = await supabase
       .from("User")
       .update(data)
@@ -97,13 +96,12 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           <Label htmlFor="phoneNumber">Phone Number</Label>
          <PhoneInput
           country={"kr"}
-          value={`${watch("phoneCode") ?? ""}${watch("phoneNumber") ?? ""}`}
+          value={watch("phoneNumber") ?? ""}
           onChange={(value, country) => {
             if (country && "dialCode" in country) {
-              const code = `+${country.dialCode}`;
-              const number = value.replace(/^\+?\d+/, "");
+              const code = `${country.dialCode}`;
               setValue("phoneCode", code);
-              setValue("phoneNumber", number);
+              setValue("phoneNumber", value);
             }
           }}
           inputProps={{ name: "phoneNumber", required: false }}
