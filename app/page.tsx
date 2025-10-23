@@ -10,7 +10,7 @@ export default function Home() {
         <div className="flex-col flex-1 text-center">
           <div className={ pacifico.className + " text-7xl sm:text-9xl font-bold leading-normal mb-6"}>Make them read your 
             &nbsp;<span className="bg-green-500 px-2 -rotate-3 leading-none inline-block">resume</span></div>
-          <div className="text-gray-300 text-xl font-bold mt-12">Companies don't play it fair anymore, why should you?<br/>
+          <div className="text-gray-500 text-xl font-bold mt-12">Companies don't play it fair anymore, why should you?<br/>
           Make sure your resume passes the ATS and lands on a real recruiter’s desk.</div>
         </div>
       </div>

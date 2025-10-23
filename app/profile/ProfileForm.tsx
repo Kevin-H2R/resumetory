@@ -69,21 +69,21 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div>
-        <Label>Email (read only)</Label>
+        <Label className="mb-2">Email (read only)</Label>
         <Input
           value={initialUser.email}
           readOnly
-          className="bg-gray-100 cursor-not-allowed"
+          className="bg-gray-100 cursor-not-allowed my-2"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="firstname">First Name</Label>
+          <Label className="mb-2" htmlFor="firstname">First Name</Label>
           <Input id="firstname" {...register("firstname")} />
         </div>
         <div>
-          <Label htmlFor="lastname">Last Name</Label>
+          <Label className="mb-2" htmlFor="lastname">Last Name</Label>
           <Input id="lastname" {...register("lastname")} />
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
 
         </div>
         <div>
-          <Label htmlFor="phoneNumber">Phone Number</Label>
+          <Label className="mb-2" htmlFor="phoneNumber">Phone Number</Label>
          <PhoneInput
           country={"kr"}
           value={watch("phoneNumber") ?? ""}
@@ -108,27 +108,21 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
           inputStyle={{
             width: "100%",
             borderRadius: "0.5rem",
-            borderColor: "#333",
-            backgroundColor: "#171717",
-            color: "#fff",
           }}
           buttonStyle={{
             borderRadius: "0.5rem 0 0 0.5rem",
-            borderColor: "#333",
-            backgroundColor: "#171717",
-            color: "#fff",
-          }}
+            }}
         />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="location">Location</Label>
+        <Label className="mb-2" htmlFor="location">Location</Label>
         <Input id="location" {...register("location")} />
       </div>
 
       <div>
-        <Label htmlFor="linkedIn">LinkedIn</Label>
+        <Label className="mb-2" htmlFor="linkedIn">LinkedIn</Label>
         <Input id="linkedIn" {...register("linkedIn")} />
         {errors.linkedIn && (
           <p className="text-sm text-red-500">{errors.linkedIn.message}</p>
@@ -136,7 +130,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
       </div>
 
       <div>
-        <Label htmlFor="link">Personal Link</Label>
+        <Label className="mb-2" htmlFor="link">Personal Link</Label>
         <Input id="link" {...register("link")} />
         {errors.link && (
           <p className="text-sm text-red-500">{errors.link.message}</p>
@@ -144,7 +138,7 @@ export default function ProfileForm({ initialUser }: ProfileFormProps) {
       </div>
 
       <div className="pt-4">
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full bg-green-500 text-black" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...
