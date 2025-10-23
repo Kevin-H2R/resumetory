@@ -26,4 +26,16 @@ model User {
   location String?
   linkedIn String?
   link String?
+  experiences Experience[]
+}
+
+model Experience {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  startDate DateTime
+  endDate DateTime?
+  company String
+  current Boolean?
+  description String
 }
